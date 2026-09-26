@@ -357,9 +357,6 @@ public partial class PhotinoWindow
     /// WebView2 on Windows can only be fully transparent or fully opaque.
     /// By default, this is set to false.
     /// </summary>
-    /// <exception cref="InvalidOperationException">
-    /// On Windows, thrown if trying to set value after native window is initialized.
-    /// </exception>
     public bool Transparent
     {
         get
@@ -382,9 +379,6 @@ public partial class PhotinoWindow
                 _startupParameters.Window.Transparent = value;
                 return;
             }
-
-            if (Platform.IsWindows)
-                throw new InvalidOperationException("Transparent can only be set on Windows before the native window is instantiated.");
 
             Log($"Invoking {nameof(Photino_SetTransparentEnabled)}({value})");
 

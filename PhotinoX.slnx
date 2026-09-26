@@ -7,6 +7,7 @@
     <Project Path="Samples/NotificationDiagnostics/NotificationDiagnostics.csproj" />
     <Project Path="Samples/RuntimeDiagnostics/RuntimeDiagnostics.csproj" />
     <Project Path="Samples/SplashScreen/SplashScreen.csproj" />
+    <Project Path="Samples/TransparencyDemo/TransparencyDemo.csproj" />
     <Project Path="Samples/WindowDiagnostics/WindowDiagnostics.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">

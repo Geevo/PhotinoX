@@ -294,8 +294,14 @@ internal struct PhotinoWindowNativeParameters
         if (Geometry.MinHeight > Geometry.MaxHeight)
             (errors ??= []).Add($"MinHeight cannot be greater than MaxHeight. MinHeight: {Geometry.MinHeight}, MaxHeight: {Geometry.MaxHeight}.");
 
-        if (Platform.IsWindows && Window.Chromeless && (Geometry.UseOsDefaultLocation || Geometry.UseOsDefaultSize))
-            (errors ??= []).Add("Chromeless cannot be used with UseOsDefaultLocation or UseOsDefaultSize on Windows. Size and location must be specified.");
+        if (Platform.IsWindows)
+        {
+            if (Window.Chromeless && (Geometry.UseOsDefaultLocation || Geometry.UseOsDefaultSize))
+                (errors ??= []).Add("Chromeless cannot be used with UseOsDefaultLocation or UseOsDefaultSize on Windows. Size and location must be specified.");
+
+            if (Window.Transparent && !Window.Chromeless)
+                (errors ??= []).Add("Transparent windows must be chromeless on Windows.");
+        }
 
         if (LinuxChromeless.DragRegionHeight < 0)
             (errors ??= []).Add($"DragRegionHeight cannot be negative. DragRegionHeight: {LinuxChromeless.DragRegionHeight}.");

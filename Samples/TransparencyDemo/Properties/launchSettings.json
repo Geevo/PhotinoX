@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TransparencyDemo": {
+      "commandName": "Project",
+      "debugEngines": "managed,native"
+    }
+  }
+}
