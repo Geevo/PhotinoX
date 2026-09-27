@@ -2,7 +2,8 @@ using Photino.NET;
 
 var app = new PhotinoApplication
 {
-    ShutdownMode = PhotinoShutdownMode.OnMainWindowClose
+    ShutdownMode = PhotinoShutdownMode.OnMainWindowClose,
+    NotificationsEnabled = false
 };
 
 var window = new PhotinoWindow()
@@ -13,29 +14,34 @@ var window = new PhotinoWindow()
     .SetTransparent(true)
     .Load("wwwroot/index.html");
 
-window.RegisterWebMessageReceivedHandler((_, args) =>
-{
-    switch (args.Message)
+window
+    .RegisterInitialContentLoadedHandler((_, _) =>
     {
-        case "transparent":
-            window.Transparent = true;
-            break;
-
-        case "opaque":
-            window.Transparent = false;
-            break;
-
-        case "toggle":
-            window.Transparent = !window.Transparent;
-            break;
-
-        case "close":
-            window.Close();
-            break;
-    }
-
-    if (!window.IsClosed)
         window.SendWebMessage(window.Transparent ? "transparent" : "opaque");
-});
+    })
+    .RegisterWebMessageReceivedHandler((_, args) =>
+    {
+        switch (args.Message)
+        {
+            case "transparent":
+                window.Transparent = true;
+                break;
+
+            case "opaque":
+                window.Transparent = false;
+                break;
+
+            case "toggle":
+                window.Transparent = !window.Transparent;
+                break;
+
+            case "close":
+                window.Close();
+                break;
+        }
+
+        if (!window.IsClosed)
+            window.SendWebMessage(window.Transparent ? "transparent" : "opaque");
+    });
 
 return app.Run(window);

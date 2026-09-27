@@ -9,7 +9,7 @@ internal static class Program
     [STAThread]
     private static int Main(string[] args)
     {
-        var app = new PhotinoApplication();
+        var app = new PhotinoApplication() { NotificationsEnabled = false };
 
         var window = new PhotinoWindow()
             .SetTitle("Navigation Policy Demo")

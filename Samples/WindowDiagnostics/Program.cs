@@ -18,7 +18,7 @@ internal static class Program
     [STAThread]
     private static int Main()
     {
-        var app = new PhotinoApplication();
+        var app = new PhotinoApplication() { NotificationsEnabled = false };
 
         var mainWindow = DiagnosticWindow.CreateMain();
 

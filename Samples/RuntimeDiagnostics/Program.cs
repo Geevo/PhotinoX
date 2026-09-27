@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Photino.NET;
 
-var app = new PhotinoApplication();
+var app = new PhotinoApplication() { NotificationsEnabled = false };
 
 var window = new PhotinoWindow()
     .SetTitle("PhotinoX Runtime Diagnostics")

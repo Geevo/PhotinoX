@@ -6,7 +6,8 @@ using Photino.NET;
 
 var app = new PhotinoApplication
 {
-    ShutdownMode = PhotinoShutdownMode.OnMainWindowClose
+    ShutdownMode = PhotinoShutdownMode.OnMainWindowClose,
+    NotificationsEnabled = false
 };
 
 var splashWindow = new PhotinoWindow()

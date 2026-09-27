@@ -11,7 +11,7 @@ internal class Program
     [STAThread]
     static void Main(string[] args)
     {
-        var app = new PhotinoApplication();
+        var app = new PhotinoApplication() { NotificationsEnabled = false };
 
         var mainWindow = new PhotinoWindow()
             .SetTitle("Chromeless Demo")

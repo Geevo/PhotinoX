@@ -352,11 +352,18 @@ public partial class PhotinoWindow
     }
 
     /// <summary>
-    /// When true, the native window and browser control can be displayed with transparent background.
-    /// Html document's body background must have alpha-based value.
-    /// WebView2 on Windows can only be fully transparent or fully opaque.
-    /// By default, this is set to false.
+    /// Gets or sets whether the native window and browser control are displayed with a transparent background.
+    /// The HTML document body must use an alpha-based background color.
+    /// WebView2 on Windows supports only fully transparent or fully opaque backgrounds.
+    /// Default is <see langword="false"/>.
     /// </summary>
+    /// <remarks>
+    /// On Windows, transparent windows must be chromeless.
+    /// </remarks>
+    /// <exception cref="InvalidOperationException">
+    /// On Windows, thrown when enabling transparency for a non-chromeless window
+    /// or for a window that was not initialized with transparency enabled.
+    /// </exception>
     public bool Transparent
     {
         get
@@ -378,6 +385,15 @@ public partial class PhotinoWindow
             {
                 _startupParameters.Window.Transparent = value;
                 return;
+            }
+
+            if (Platform.IsWindows)
+            {
+                if (value && !Chromeless)
+                    throw new InvalidOperationException("Transparent windows must be chromeless on Windows.");
+
+                if (value && !_startupParameters.Window.Transparent)
+                    throw new InvalidOperationException("Transparency must be enabled before window initialization on Windows.");
             }
 
             Log($"Invoking {nameof(Photino_SetTransparentEnabled)}({value})");
