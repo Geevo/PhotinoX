@@ -29,7 +29,7 @@ partial class PhotinoWindow
     /// <summary>
     /// Stores registered custom scheme handlers keyed by scheme name.
     /// </summary>
-    internal Dictionary<string, CustomSchemeHandler> CustomSchemes = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, CustomSchemeHandler> _customSchemes = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Determines whether the specified URI scheme has a registered managed custom scheme handler.
@@ -43,8 +43,7 @@ partial class PhotinoWindow
     /// </returns>
     private bool IsCustomSchemeRegistered(string scheme)
     {
-        return !string.IsNullOrWhiteSpace(scheme) &&
-               CustomSchemes.ContainsKey(scheme);
+        return !string.IsNullOrWhiteSpace(scheme) && _customSchemes.ContainsKey(scheme);
     }
 
     /// <summary>
@@ -87,27 +86,36 @@ partial class PhotinoWindow
 
         if (_nativeInstance == IntPtr.Zero)
         {
-            if (!CustomSchemes.ContainsKey(scheme))
+            if (!_customSchemes.ContainsKey(scheme) && _customSchemes.Count >= PhotinoWindowNativeParameters.MaxCustomSchemeNames)
             {
-                if (CustomSchemes.Count >= PhotinoWindowNativeParameters.MaxCustomSchemeNames)
-                    throw new InvalidOperationException($"No more than {PhotinoWindowNativeParameters.MaxCustomSchemeNames} custom schemes can be set prior to initialization. Additional handlers can be added after initialization.");
+                throw new InvalidOperationException($"No more than {PhotinoWindowNativeParameters.MaxCustomSchemeNames} custom schemes can be set prior to initialization. Additional handlers can be added after initialization.");
             }
+
+            _customSchemes[scheme] = handler;
+            return this;
         }
-        else
+
+        Dispatcher.Invoke(static state =>
         {
-            if (!CustomSchemes.ContainsKey(scheme))
+            if (state.Window._customSchemes.ContainsKey(state.Scheme))
             {
-                bool added = Dispatcher.Invoke(static state =>
-                {
-                    return Photino_AddCustomSchemeName(state.NativeInstance, state.Scheme);
-                }, (NativeInstance: _nativeInstance, Scheme: scheme));
-
-                if (!added)
-                    throw new InvalidOperationException($"Failed to register custom scheme: '{scheme}'.");
+                state.Window._customSchemes[state.Scheme] = state.Handler;
+                return;
             }
-        }
 
-        CustomSchemes[scheme] = handler;
+            state.Window._customSchemes.Add(state.Scheme, state.Handler);
+            try
+            {
+                if (!Photino_AddCustomSchemeName(state.Window._nativeInstance, state.Scheme))
+                    throw new InvalidOperationException($"Failed to register custom scheme: '{state.Scheme}'.");
+            }
+            catch
+            {
+                bool removed = state.Window._customSchemes.Remove(state.Scheme);
+                Debug.Assert(removed);
+                throw;
+            }
+        }, (Window: this, Scheme: scheme, Handler: handler));
 
         return this;
     }
@@ -144,9 +152,9 @@ partial class PhotinoWindow
         if (scheme is "http" or "https" or "file")
             return IntPtr.Zero;
 
-        Debug.Assert(CustomSchemes.ContainsKey(scheme), $"A handler for the custom scheme '{scheme}' has not been registered.");
+        Debug.Assert(_customSchemes.ContainsKey(scheme), $"A handler for the custom scheme '{scheme}' has not been registered.");
 
-        if (!CustomSchemes.TryGetValue(scheme, out CustomSchemeHandler? handler))
+        if (!_customSchemes.TryGetValue(scheme, out CustomSchemeHandler? handler))
             return IntPtr.Zero;
 
         Stream? responseStream;

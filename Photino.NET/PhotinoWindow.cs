@@ -1179,11 +1179,9 @@ public partial class PhotinoWindow
         // Fill fixed-size array of custom scheme names
         Array.Clear(_startupParameters.Browser.CustomSchemeNames);
         var i = 0;
-        foreach (var pair in CustomSchemes)
+        foreach (var pair in _customSchemes)
         {
             var scheme = pair.Key;
-            if (!IsValidSchemeName(scheme))
-                continue;
             _startupParameters.Browser.CustomSchemeNames[i++] = scheme;
             if (i == _startupParameters.Browser.CustomSchemeNames.Length)
                 break;
