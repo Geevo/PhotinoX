@@ -153,33 +153,14 @@ public partial class PhotinoWindow
     /// The platform-specific native window reference as an <see cref="IntPtr"/>.
     /// </value>
     /// <exception cref="InvalidOperationException">Thrown when the window is not initialized or has already been closed.</exception>
-    /// <exception cref="PlatformNotSupportedException">Thrown when the current platform is not supported.</exception>
     public IntPtr WindowHandle
     {
         get
         {
             ThrowIfClosedOrNotInitialized();
 
-            IntPtr handle;
-            if (Platform.IsWindows)
-            {
-                handle = Dispatcher.Invoke(static nativeInstance => Photino_getHwnd_win32(nativeInstance), _nativeInstance);
-                return handle;
-            }
-
-            if (Platform.IsLinux)
-            {
-                handle = Dispatcher.Invoke(static nativeInstance => Photino_getGtkWidget_linux(nativeInstance), _nativeInstance);
-                return handle;
-            }
-
-            if (Platform.IsMacOS)
-            {
-                handle = Dispatcher.Invoke(static nativeInstance => Photino_getNSWindow_mac(nativeInstance), _nativeInstance);
-                return handle;
-            }
-
-            throw new PlatformNotSupportedException($"{nameof(WindowHandle)} not supported on current platform.");
+            IntPtr handle = Dispatcher.Invoke(static nativeInstance => Photino_GetWindowHandle(nativeInstance), _nativeInstance);
+            return handle != IntPtr.Zero ? handle : throw new InvalidOperationException("Failed to get the native window handle.");
         }
     }
 
@@ -1178,13 +1159,12 @@ public partial class PhotinoWindow
     {
         // Fill fixed-size array of custom scheme names
         Array.Clear(_startupParameters.Browser.CustomSchemeNames);
-        var i = 0;
+        var index = 0;
         foreach (var pair in _customSchemes)
         {
-            var scheme = pair.Key;
-            _startupParameters.Browser.CustomSchemeNames[i++] = scheme;
-            if (i == _startupParameters.Browser.CustomSchemeNames.Length)
-                break;
+            Debug.Assert(pair.Value != null, "Custom scheme handler should not be null.");
+            Debug.Assert(index < PhotinoWindowNativeParameters.MaxCustomSchemeNames);
+            _startupParameters.Browser.CustomSchemeNames[index++] = pair.Key;
         }
 
         _startupParameters.Window.Title = _title ?? DefaultTitle;

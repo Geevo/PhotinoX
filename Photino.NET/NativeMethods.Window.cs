@@ -9,15 +9,7 @@ internal static partial class NativeMethods
 {
     [LibraryImport(DLL_NAME)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial IntPtr Photino_getHwnd_win32(IntPtr instance);
-
-    [LibraryImport(DLL_NAME, SetLastError = true)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial IntPtr Photino_getGtkWidget_linux(IntPtr instance);
-
-    [LibraryImport(DLL_NAME, SetLastError = true)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial IntPtr Photino_getNSWindow_mac(IntPtr instance);
+    internal static partial IntPtr Photino_GetWindowHandle(IntPtr instance);
 
     [LibraryImport(DLL_NAME, SetLastError = true)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
