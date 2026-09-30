@@ -13,13 +13,15 @@ internal static partial class NativeMethods
 
     [LibraryImport(DLL_NAME, SetLastError = true)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial void Photino_SetChromelessDragRegions_linux(IntPtr instance,
+    [return: MarshalAs(UnmanagedType.I1)]
+    internal static unsafe partial bool Photino_SetChromelessDragRegions(IntPtr instance,
         NativeLayoutRegion* dragRegions, int dragRegionCount,
         NativeLayoutRegion* noDragRegions, int noDragRegionCount);
 
     [LibraryImport(DLL_NAME, SetLastError = true)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial void Photino_SetChromelessResizeBorderThickness_linux(IntPtr instance, int thickness);
+    [return: MarshalAs(UnmanagedType.I1)]
+    internal static partial bool Photino_SetChromelessResizeBorderThickness(IntPtr instance, int thickness);
 
     // window lifecycle
     [LibraryImport(DLL_NAME)]

@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Diagnostics;
 using System.Drawing;
 
 using static Photino.NET.NativeMethods;
@@ -822,15 +823,16 @@ partial class PhotinoWindow
                 verticalAlignment: VerticalAlignment.Top)
             : default;
 
-        Dispatcher.Invoke(static state =>
+        bool result = Dispatcher.Invoke(static state =>
         {
             unsafe
             {
-                Photino_SetChromelessDragRegions_linux(state.NativeInstance,
+                return Photino_SetChromelessDragRegions(state.NativeInstance,
                     state.DragRegion.height > 0 ? &state.DragRegion : null, state.DragRegion.height > 0 ? 1 : 0,
                     null, 0);
             }
         }, (NativeInstance: _nativeInstance, DragRegion: dragRegion));
+        Debug.Assert(result, "Failed to set Linux chromeless drag region.");
 
         return this;
     }
@@ -889,14 +891,14 @@ partial class PhotinoWindow
             for (var i = 0; i < noDragRegionCount; i++)
                 nativeNoDragRegions[i] = new NativeLayoutRegion(noDragRegions![i]);
 
-            Dispatcher.Invoke(static state =>
+            bool result = Dispatcher.Invoke(static state =>
             {
                 unsafe
                 {
                     fixed (NativeLayoutRegion* dragRegionsPointer = state.DragRegions)
                     fixed (NativeLayoutRegion* noDragRegionsPointer = state.NoDragRegions)
                     {
-                        Photino_SetChromelessDragRegions_linux(state.NativeInstance,
+                        return Photino_SetChromelessDragRegions(state.NativeInstance,
                             dragRegionsPointer, state.DragRegionCount,
                             noDragRegionsPointer, state.NoDragRegionCount);
                     }
@@ -907,6 +909,7 @@ partial class PhotinoWindow
                 DragRegionCount: dragRegionCount,
                 NoDragRegions: nativeNoDragRegions,
                 NoDragRegionCount: noDragRegionCount));
+            Debug.Assert(result, "Failed to set Linux chromeless drag regions.");
         }
         finally
         {
@@ -944,9 +947,10 @@ partial class PhotinoWindow
 
         if (Platform.IsLinux)
         {
-            Dispatcher.Invoke(
-                static state => Photino_SetChromelessResizeBorderThickness_linux(state.NativeInstance, state.Thickness),
+            bool result = Dispatcher.Invoke(
+                static state => Photino_SetChromelessResizeBorderThickness(state.NativeInstance, state.Thickness),
                 (NativeInstance: _nativeInstance, Thickness: thickness));
+            Debug.Assert(result, "Failed to set Linux chromeless resize border thickness.");
         }
 
         return this;
