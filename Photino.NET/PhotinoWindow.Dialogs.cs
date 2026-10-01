@@ -258,7 +258,13 @@ partial class PhotinoWindow
 
                     var value = extension.Trim();
 
-                    nativeFilters.Add(value == "*" ? value : value.TrimStart('*', '.'));
+                    if (value == "*")
+                        return [];
+
+                    value = value.TrimStart('*', '.');
+
+                    if (value.Length > 0)
+                        nativeFilters.Add(value);
                 }
 
                 continue;
