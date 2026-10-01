@@ -35,8 +35,18 @@ partial class PhotinoWindow
     {
         Debug.Assert(instance != IntPtr.Zero, "Instance pointer is zero.");
         _nativeInstance = instance;
-        PhotinoApplication.Current.OnWindowCreated(this, registered);
-        Created?.Invoke(this, EventArgs.Empty);
+
+        try
+        {
+            PhotinoApplication.Current.OnWindowCreated(this, registered);
+        }
+        catch (Exception ex)
+        {
+            HandleNativeCallbackException(ex);
+            return;
+        }
+
+        InvokeNativeEvent(Created);
     }
 
     /// <summary>
@@ -100,7 +110,14 @@ partial class PhotinoWindow
         }
         finally
         {
-            PhotinoApplication.Current.OnWindowClosed(this);
+            try
+            {
+                PhotinoApplication.Current.OnWindowClosed(this);
+            }
+            catch (Exception ex)
+            {
+                HandleNativeCallbackException(ex);
+            }
         }
     }
 

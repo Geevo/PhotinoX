@@ -309,6 +309,9 @@ internal struct PhotinoWindowNativeParameters
         if (LinuxChromeless.DragRegionLeftInset < 0)
             (errors ??= []).Add($"DragRegionLeftInset cannot be negative. DragRegionLeftInset: {LinuxChromeless.DragRegionLeftInset}.");
 
+        if (LinuxChromeless.DragRegionTopInset < 0)
+            (errors ??= []).Add($"DragRegionTopInset cannot be negative. DragRegionTopInset: {LinuxChromeless.DragRegionTopInset}.");
+
         if (LinuxChromeless.DragRegionRightInset < 0)
             (errors ??= []).Add($"DragRegionRightInset cannot be negative. DragRegionRightInset: {LinuxChromeless.DragRegionRightInset}.");
 

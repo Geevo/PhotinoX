@@ -34,6 +34,7 @@ partial class PhotinoWindow
     {
         public IntPtr NativeInstance;
         public required List<Monitor> Monitors;
+        public Exception? Exception;
     }
 
     private static readonly GetAllMonitorsCallback s_getAllMonitorsCallback = OnGetMonitor;
@@ -43,7 +44,15 @@ partial class PhotinoWindow
         var handle = GCHandle.FromIntPtr(value);
         var state = (GetMonitorsState)handle.Target!;
 
-        state.Monitors.Add(new Monitor(monitor));
-        return 1;
+        try
+        {
+            state.Monitors.Add(new Monitor(monitor));
+            return 1;
+        }
+        catch (Exception ex)
+        {
+            state.Exception = ex;
+            return 0;
+        }
     }
 }

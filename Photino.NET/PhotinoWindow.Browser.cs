@@ -476,7 +476,8 @@ partial class PhotinoWindow
     /// Gets or sets the WebView user data folder used by the native browser control.
     /// </summary>
     /// <remarks>
-    /// Windows only. When set to <see langword="null"/>, the platform default WebView2 behavior is used.
+    /// Windows only. The default value is the <c>%LOCALAPPDATA%\Photino</c> folder.
+    /// Set the value to <see langword="null"/> to use the platform default WebView2 behavior.
     /// </remarks>
     public string? UserDataFolder
     {

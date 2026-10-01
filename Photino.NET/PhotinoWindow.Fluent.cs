@@ -798,6 +798,11 @@ partial class PhotinoWindow
         Log($".{nameof(SetLinuxChromelessDragRegion)}({height}, {rightInset}, {leftInset}, {topInset})");
         ThrowIfClosed();
 
+        ArgumentOutOfRangeException.ThrowIfNegative(height);
+        ArgumentOutOfRangeException.ThrowIfNegative(rightInset);
+        ArgumentOutOfRangeException.ThrowIfNegative(leftInset);
+        ArgumentOutOfRangeException.ThrowIfNegative(topInset);
+
         if (_nativeInstance == IntPtr.Zero)
         {
             LinuxChromelessSettings = LinuxChromelessSettings with
@@ -935,6 +940,8 @@ partial class PhotinoWindow
         Log($".{nameof(SetLinuxChromelessResizeBorderThickness)}({thickness})");
         ThrowIfClosed();
 
+        ArgumentOutOfRangeException.ThrowIfNegative(thickness);
+
         if (_nativeInstance == IntPtr.Zero)
         {
             LinuxChromelessSettings = LinuxChromelessSettings with
@@ -1050,6 +1057,9 @@ partial class PhotinoWindow
     {
         Log($".{nameof(BeginWindowResize)}({edge})");
         ThrowIfClosedOrNotInitialized();
+
+        if (!Enum.IsDefined(edge))
+            throw new ArgumentOutOfRangeException(nameof(edge), edge, "Invalid window edge.");
 
         Dispatcher.Invoke(static state =>
         {
@@ -1483,7 +1493,8 @@ partial class PhotinoWindow
     /// Sets the WebView user data folder used by the native browser control.
     /// </summary>
     /// <remarks>
-    /// Windows only. When set to <see langword="null"/>, the platform default WebView2 behavior is used.
+    /// Windows only. The default value is the <c>%LOCALAPPDATA%\Photino</c> folder.
+    /// Set the value to <see langword="null"/> to use the platform default WebView2 behavior.
     /// </remarks>
     /// <returns>
     /// Returns the current <see cref="PhotinoWindow"/> instance.

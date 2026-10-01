@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 
 using static Photino.NET.NativeMethods;
@@ -192,6 +193,10 @@ public partial class PhotinoWindow
                 using var scope = new GCHandleScope(state, out var stateHandle);
                 return Photino_GetAllMonitors(state.NativeInstance, s_getAllMonitorsCallback, stateHandle);
             }, state);
+
+            if (state.Exception is not null)
+                ExceptionDispatchInfo.Capture(state.Exception).Throw();
+
             Debug.Assert(enumerated);
 
             if (!enumerated)

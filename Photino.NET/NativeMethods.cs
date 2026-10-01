@@ -23,12 +23,6 @@ internal static partial class NativeMethods
     internal static extern PhotinoNativeRuntimeInfo Photino_GetRuntimeInfo();
 #pragma warning restore SYSLIB1054
 
-    internal static string? GetNativeVersion()
-    {
-        var ptr = Photino_GetNativeVersion();
-        return ptr != IntPtr.Zero ? Marshal.PtrToStringUTF8(ptr) : null;
-    }
-
     internal static string? PtrToStringUTF8(IntPtr value)
     {
         return Marshal.PtrToStringUTF8(value);
