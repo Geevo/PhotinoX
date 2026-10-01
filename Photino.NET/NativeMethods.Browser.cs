@@ -5,9 +5,10 @@ namespace Photino.NET;
 
 internal static partial class NativeMethods
 {
-    [LibraryImport(DLL_NAME, StringMarshalling = StringMarshalling.Utf16/* wchar_t* */)]
+    [LibraryImport(DLL_NAME, StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial void Photino_setWebView2RuntimePath_win32(string? webView2RuntimePath);
+    [return: MarshalAs(UnmanagedType.I1)]
+    internal static partial bool Photino_SetWebView2RuntimePath(string? webView2RuntimePath);
 
     [LibraryImport(DLL_NAME)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

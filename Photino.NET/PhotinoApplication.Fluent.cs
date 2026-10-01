@@ -77,14 +77,23 @@ partial class PhotinoApplication
     /// </summary>
     /// <remarks>
     /// Windows only. This method must be called before any WebView2-backed window is created.
+    /// On other platforms, this method has no effect.
     /// </remarks>
     /// <param name="path">The WebView2 runtime path, or <see langword="null"/> to clear it.</param>
     /// <returns>The current <see cref="PhotinoApplication"/> instance.</returns>
-    /// https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the WebView2 runtime path could not be set.
+    /// </exception>
+    /// <seealso href="https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution">
+    /// Distribute your app and the WebView2 Runtime
+    /// </seealso>
     public PhotinoApplication SetWebView2RuntimePath(string? path)
     {
-        if (Platform.IsWindows)
-            Photino_setWebView2RuntimePath_win32(path);
+        if (!Platform.IsWindows)
+            return this;
+
+        if (!Photino_SetWebView2RuntimePath(path))
+            throw new InvalidOperationException("Failed to set the WebView2 runtime path.");
 
         return this;
     }
