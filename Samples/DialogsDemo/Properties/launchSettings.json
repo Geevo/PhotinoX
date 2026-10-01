@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DialogsDemo": {
+      "commandName": "Project",
+      "debugEngines": "managed,native"
+    }
+  }
+}
