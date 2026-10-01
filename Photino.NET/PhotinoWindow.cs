@@ -67,7 +67,7 @@ public partial class PhotinoWindow
         Browser = new()
         {
             UserDataFolder = Platform.IsWindows
-                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PhotinoX")
+                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Photino") // Preserve the existing user data folder for backward compatibility.
                 : null,
             UserAgent = "PhotinoX WebView",
             CustomSchemeNames = new string[PhotinoWindowNativeParameters.MaxCustomSchemeNames],

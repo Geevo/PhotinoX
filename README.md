@@ -312,6 +312,12 @@ dotnet pack    Photino.NET/PhotinoX.csproj -c Release -o artifacts
 
 Issues and PRs are welcome. Keep PRs focused, minimal, and consistent with the rest of PhotinoX.
 
+## Contributors
+
+<a href="https://github.com/ivanvoyager/PhotinoX/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ivanvoyager/PhotinoX" />
+</a>
+
 ## License
 
 PhotinoX is licensed under **Apache-2.0**.

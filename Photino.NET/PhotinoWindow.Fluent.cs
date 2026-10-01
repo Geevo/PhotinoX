@@ -947,8 +947,7 @@ partial class PhotinoWindow
 
         if (Platform.IsLinux)
         {
-            bool result = Dispatcher.Invoke(
-                static state => Photino_SetChromelessResizeBorderThickness(state.NativeInstance, state.Thickness),
+            bool result = Dispatcher.Invoke(static state => Photino_SetChromelessResizeBorderThickness(state.NativeInstance, state.Thickness),
                 (NativeInstance: _nativeInstance, Thickness: thickness));
             Debug.Assert(result, "Failed to set Linux chromeless resize border thickness.");
         }
