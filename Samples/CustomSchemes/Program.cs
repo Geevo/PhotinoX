@@ -13,10 +13,8 @@ internal static class Program
 
         var window = new PhotinoWindow()
             .SetTitle("PhotinoX Custom Schemes")
-            .SetUseOsDefaultSize(false)
             .SetSize(new Size(900, 700))
             .Center()
-            .SetDevToolsEnabled(true)
             .RegisterCustomSchemeHandler("app", HandleAppScheme)
             .RegisterWebMessageReceivedHandler((sender, message) =>
             {

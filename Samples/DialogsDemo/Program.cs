@@ -4,7 +4,8 @@ using Photino.NET;
 
 var application = new PhotinoApplication
 {
-    ShutdownMode = PhotinoShutdownMode.OnMainWindowClose
+    ShutdownMode = PhotinoShutdownMode.OnMainWindowClose,
+    NotificationsEnabled = false,
 };
 
 var window = new PhotinoWindow()

@@ -71,7 +71,7 @@ async Task StartApplicationAsync()
         {
             var mainWindow = new PhotinoWindow()
                 .SetTitle("PhotinoX Splash Screen Sample")
-                .SetSize(1200, 820)
+                .SetSize(1000, 800)
                 .Center()
                 .Load(address);
 

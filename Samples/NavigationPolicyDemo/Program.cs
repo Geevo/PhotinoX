@@ -13,8 +13,6 @@ internal static class Program
 
         var window = new PhotinoWindow()
             .SetTitle("Navigation Policy Demo")
-            .SetUseOsDefaultSize(false)
-            .SetUseOsDefaultLocation(false)
             .SetSize(new Size(960, 700))
             .Center()
             .SetStatusBarEnabled(false)

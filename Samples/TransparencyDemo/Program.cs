@@ -1,10 +1,6 @@
 using Photino.NET;
 
-var app = new PhotinoApplication
-{
-    ShutdownMode = PhotinoShutdownMode.OnMainWindowClose,
-    NotificationsEnabled = false
-};
+var app = new PhotinoApplication { NotificationsEnabled = false };
 
 var window = new PhotinoWindow()
     .SetTitle("Transparency Demo")

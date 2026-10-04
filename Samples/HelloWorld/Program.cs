@@ -6,13 +6,14 @@ var application = new PhotinoApplication();
 var window = new PhotinoWindow();
 
 window.SetTitle("PhotinoX HelloWorld")
+    .SetSize(900, 600)
     .Center()
     .LoadString("""
     <!DOCTYPE html>
     <html>
         <head>
             <meta charset="utf-8">
-            <title>PhotinoX Web Messaging</title>
+            <title>PhotinoX HelloWorld</title>
         </head>
         <body>
             <h1>Web messaging</h1>
@@ -42,7 +43,6 @@ window.SetTitle("PhotinoX HelloWorld")
         Debug.Assert(windows.Count == 1);
         Debug.Assert(windows[0] == window);
         Debug.Assert(windows.Contains(window));
-        Debug.Assert(windows.Count == 1);
         Debug.Assert(windows.Any());
     })
     .RegisterClosingHandler((_, args) =>

@@ -31,7 +31,7 @@ var application = new PhotinoApplication()
 
 window = new PhotinoWindow()
     .SetTitle("Notification Diagnostics")
-    .SetSize(980, 760)
+    .SetSize(1180, 900)
     .Center()
     .RegisterWebMessageReceivedHandler((_, e) =>
     {
